@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { UsuarioResquestDto } from './usuario_request.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -18,8 +19,23 @@ export class UsuarioService {
         return this.usuarios 
     }
 
+    salvarUsuario(dto: UsuarioResquestDto){
+        const usuario = this.usuarios.find(usuario => usuario.email === dto.email)
+        if(usuario) throw new BadRequestException(`Usuário já Cadastrado com email ${dto.email}`)
+        this.usuarios.push(dto)
+    }
+
     buscarUsuariosPeloEmail(email:string){
         const usuario = this.usuarios.find(usuario => usuario.email === email)
+
+        if(usuario === null || usuario === undefined){
+            throw new NotFoundException("Usuário não encontrado!")
+        }
         return usuario 
+    }
+
+    removerUsuario(email:string){
+        const index = this.usuarios.find(usuario => usuario.email === email)
+        this.usuarios.splice(index, 1)
     }
 }

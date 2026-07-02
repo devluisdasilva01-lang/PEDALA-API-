@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, Post, Body, Delete, HttpCode} from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
+import { UsuarioResquestDto } from './usuario_request.dto';
 
 @Controller('usuarios')
 export class UsuarioController {
@@ -20,6 +21,17 @@ export class UsuarioController {
   @Get("/buscar")
   buscarUserPeloEmail(@Query("email") email:string){
     return this.usuarioService.buscarUsuariosPeloEmail(email)
+  }
+
+  @Post()
+  addUsuario(@Body() request:UsuarioResquestDto){
+    this.usuarioService.salvarUsuario(request)
+  }
+
+  @Delete("/deletar")
+  @HttpCode(204)
+  deletarUsuario(@Query("email") email:string){
+    this.usuarioService.removerUsuario(email) 
   }
 }
 

@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { UsuarioResquestDto } from './usuario_request.dto';
+import { UsuarioAtualizarRequestDto } from './usuario_atualizar_request.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -35,7 +36,21 @@ export class UsuarioService {
     }
 
     removerUsuario(email:string){
-        const index = this.usuarios.find(usuario => usuario.email === email)
+        const index = this.usuarios.findIndex(usuario => usuario.email === email)
+        if(index === -1) throw new BadRequestException("Nenhum usuário com este email")
         this.usuarios.splice(index, 1)
+    }
+
+    atualizarUsuario(email:string, request:UsuarioAtualizarRequestDto){
+       const index = this.usuarios.findIndex(usuario => usuario.email === email)
+       
+       if(index === -1) throw new BadRequestException("Nenhum usuário com este email")
+       
+        const usuario = this.usuarios[index]
+        this.usuarios[index] = {
+            ...usuario,
+            nome: request.nome ? request.nome : usuario.nome,
+            telefone: request.telefone ? request.telefone : usuario.telefone  
+        }
     }
 }

@@ -1,11 +1,11 @@
 import { IsOptional, IsPhoneNumber, MinLength } from "class-validator"
 
-export class UsuarioAtualizarRequestDto {
+export class UsuarioEditarRequestDto {
     @IsOptional()
     @MinLength(6)    
     nome: string
 
     @IsOptional()
-    @IsPhoneNumber()
+    @IsPhoneNumber('BR')
     telefone: string
 }

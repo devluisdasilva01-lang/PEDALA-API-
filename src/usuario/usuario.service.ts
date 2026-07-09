@@ -1,56 +1,55 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { UsuarioResquestDto } from './usuario_request.dto';
-import { UsuarioAtualizarRequestDto } from './usuario_atualizar_request.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UsuarioResquestDto } from './dto/usuario_request.dto';
+import { UsuarioEditarRequestDto } from './dto/usuario_editar_request.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UsuarioModel } from './usuario.model';
 
 @Injectable()
 export class UsuarioService {
-    private usuarios:any = [
-        {
-            nome: "José Antônio",
-            email: "jose@gmail.com",
-            telefone: "(86) 9.9988-6633"
-        },
-        {
-            nome: "Maria José",
-            email: "maze@gmail.com",
-            telefone: "(86) 9.9987-5544"
+
+    constructor(
+        @InjectRepository(UsuarioModel)
+        private readonly usuarioRepository: Repository<UsuarioModel>,
+    ) {}
+
+    async salvarUsuario(dto: UsuarioResquestDto) {
+        const usuario = await this.usuarioRepository.findOne({
+            where: {
+            email: dto.email,
+         },
+        });
+
+        if (usuario) {
+            throw new BadRequestException(
+                 `Usuário já Cadastrado com email ${dto.email}`,
+            );
         }
-    ] 
-    listarUsuario(){
-        return this.usuarios 
+
+        await this.usuarioRepository.save(dto);
     }
 
-    salvarUsuario(dto: UsuarioResquestDto){
-        const usuario = this.usuarios.find(usuario => usuario.email === dto.email)
-        if(usuario) throw new BadRequestException(`Usuário já Cadastrado com email ${dto.email}`)
-        this.usuarios.push(dto)
+    listarUsuario() {
+        return this.usuarioRepository.find();
     }
 
-    buscarUsuariosPeloEmail(email:string){
-        const usuario = this.usuarios.find(usuario => usuario.email === email)
-
-        if(usuario === null || usuario === undefined){
-            throw new NotFoundException("Usuário não encontrado!")
-        }
-        return usuario 
+    buscarUsuariosPeloEmail(email: string) {
+        return this.usuarioRepository.findOne({
+             where: {
+             email,
+            },
+        });
     }
 
-    removerUsuario(email:string){
-        const index = this.usuarios.findIndex(usuario => usuario.email === email)
-        if(index === -1) throw new BadRequestException("Nenhum usuário com este email")
-        this.usuarios.splice(index, 1)
+    buscarUsuarioPeloId(id: string) {
+        return this.usuarioRepository.findOneByOrFail({
+        id,
+        });
     }
 
-    atualizarUsuario(email:string, request:UsuarioAtualizarRequestDto){
-       const index = this.usuarios.findIndex(usuario => usuario.email === email)
-       
-       if(index === -1) throw new BadRequestException("Nenhum usuário com este email")
-       
-        const usuario = this.usuarios[index]
-        this.usuarios[index] = {
-            ...usuario,
-            nome: request.nome ? request.nome : usuario.nome,
-            telefone: request.telefone ? request.telefone : usuario.telefone  
-        }
+    async editar(id:string, dto: UsuarioEditarRequestDto):Promise<void>{
+        console.log('**** ', dto)
+        const result = await this.usuarioRepository.update(id, dto)
     }
+    
 }

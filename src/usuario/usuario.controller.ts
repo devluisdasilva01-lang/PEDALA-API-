@@ -1,7 +1,7 @@
-import { Controller, Get, Param, Query, Post, Body, Delete, HttpCode, Put} from '@nestjs/common';
+import { Controller, Get, Param, Query, Post, Body, HttpCode, Put} from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
-import { UsuarioResquestDto } from './usuario_request.dto';
-import { UsuarioAtualizarRequestDto } from './usuario_atualizar_request.dto';
+import { UsuarioResquestDto } from './dto/usuario_request.dto';
+import { UsuarioEditarRequestDto } from './dto/usuario_editar_request.dto';
 
 @Controller('usuarios')
 export class UsuarioController {
@@ -29,15 +29,11 @@ export class UsuarioController {
     this.usuarioService.salvarUsuario(request)
   }
 
-  @Delete("/deletar")
-  @HttpCode(204 )
-  deletarUsuario(@Query("email") email:string){
-    this.usuarioService.removerUsuario(email) 
-  }
-
-  @Put("/atualizar/:email")
-  atualizarUsuario(@Param("email") email:string, @Body() request: UsuarioAtualizarRequestDto){
-    this.usuarioService.atualizarUsuario(email, request)
-  }
+  @Put("/editar/:id")
+  @HttpCode(204)
+  async editarUsuario(@Param("id") id:string, 
+  @Body() request: UsuarioEditarRequestDto):Promise<void> {
+    await this.usuarioService.editar(id, request)
+  } 
 }
 

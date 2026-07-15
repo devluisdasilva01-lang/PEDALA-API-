@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { ModeloModel } from "./modelo.model";
+import { ModeloModel } from "../modelo/modelo.model";
 
 @Entity("bicicletas")
 export class BicicletaModel {

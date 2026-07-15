@@ -7,6 +7,8 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { typeOrmConfig } from './config/typeorm.config';
 import { EstacoesModule } from './estacoes/estacoes.module';
 import { BicicletasModule } from './bicicletas/bicicletas.module';
+import { MarcaModule } from './marca/marca.module';
+import { ModeloModule } from './modelo/modelo.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { BicicletasModule } from './bicicletas/bicicletas.module';
     UsuarioModule,
     EstacoesModule,
     BicicletasModule,
+    MarcaModule,
+    ModeloModule,
   ],
   providers: [AppService],
 })

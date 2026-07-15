@@ -1,12 +1,12 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { MarcaModel } from "./marca.model";
+import { MarcaModel } from "../marca/marca.model";
 
 @Entity("modelos")
 export class ModeloModel {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @Column({name: "modelo"})
+    @Column({name: "nome"})
     nomeModelo: string 
 
     @ManyToOne(() => MarcaModel)

@@ -11,11 +11,11 @@ export class MarcaService {
         private readonly marcaRepository: Repository<MarcaModel>
     ){}
 
-    async addMarca(nome: string): Promise<void> {
-        const existeMarca = await this.marcaRepository.findBy({nomeMarca: nome})
-        if(existeMarca) throw new BadRequestException(`Marca já registrada com o nome ${nome}`)
+    async addMarca(data: {nome: string}): Promise<void> {
+        const existeMarca = await this.marcaRepository.findOneBy({nomeMarca: data.nome})
+        if(existeMarca) throw new BadRequestException(`Marca já registrada com o nome ${data.nome}`)
         
-        const marca = this.marcaRepository.create({nomeMarca: nome})
+        const marca = this.marcaRepository.create({nomeMarca: data.nome})
         await this.marcaRepository.save(marca)
     }
 
@@ -28,5 +28,13 @@ export class MarcaService {
         
         if(!marca) throw new BadRequestException('Marca não encontrada')
         return marca
+    }
+
+     async atualizarMarca(id: string, data: {nome:string}):Promise<void>{
+           await this.marcaRepository.update(id, {nomeMarca: data.nome}) 
+    }
+
+    async removerMarca(id:string): Promise<void> {
+        await this.marcaRepository.delete(id)
     }
 }

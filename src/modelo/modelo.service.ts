@@ -4,6 +4,7 @@ import { ModeloModel } from './modelo.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ModeloRequestDto } from './dto/modelo_request.dto';
 import { MarcaService } from 'src/marca/marca.service';
+import { ModeloResponseDto } from './dto/modelo_reponse.dto';
 
 @Injectable()
 export class ModeloService {
@@ -25,5 +26,17 @@ export class ModeloService {
             marca 
         })
         await this.modeloRepository.save(modelo)
+    }
+
+    async carregarModelos(): Promise<ModeloResponseDto[]> {
+        const modelos = await this.modeloRepository.find({
+            relations:{marca: true}
+        })
+
+        return modelos.map(mo => ({
+            id: mo.id,
+            modelo: mo.nomeModelo,
+            marca: mo.marca.nomeMarca
+        }))
     }
 }

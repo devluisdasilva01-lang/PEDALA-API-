@@ -1,5 +1,5 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ILike, Repository } from 'typeorm';
 import { ModeloModel } from './modelo.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ModeloRequestDto } from './dto/modelo_request.dto';
@@ -38,5 +38,26 @@ export class ModeloService {
             modelo: mo.nomeModelo,
             marca: mo.marca.nomeMarca
         }))
+    }
+
+    async carregarModeloPelaMarca(marca:string): Promise<ModeloResponseDto[]> {
+        const modelos = await this.modeloRepository.find({
+            where: {marca: {nomeMarca:ILike(`%${marca}%`)}},
+            relations: {marca: true}
+        })
+
+        return modelos.map(modelo => ({
+            id: modelo.id,
+            modelo: modelo.nomeModelo,
+            marca: modelo.marca.nomeMarca 
+        }))
+    }
+
+    async carregarModeloPeloId(modeloId: string): Promise<ModeloModel>{
+        const modelo = await this.modeloRepository.findOneBy({id: modeloId})
+
+        if (!modelo) throw new NotFoundException("Modelo não encontrado")
+        
+        return modelo
     }
 }

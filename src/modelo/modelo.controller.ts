@@ -22,5 +22,15 @@ export class ModeloController {
     }
 
     @Get("/marcas")
-    async carregarModelosPorMarca(@Query("marca") marca: string): Promise<void>{}
+    async carregarModelosPorMarca(@Query("marca") marca: string): Promise<void>{
+        let modelos 
+
+        if (marca) {
+            modelos = await this.modeloService.carregarModeloPelaMarca(marca)
+        }else {
+            modelos = await this.modeloService.carregarModelos()
+        }
+
+        return modelos
+    }
 }

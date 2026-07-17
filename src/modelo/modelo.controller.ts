@@ -17,8 +17,14 @@ export class ModeloController {
     }
 
     @Get()
-    async carregarModelos(): Promise<ModeloResponseDto[]> {
-        return await this.modeloService.carregarModelos()
+    async carregarModelos(@Query("marca") marca:string): Promise<ModeloResponseDto[]> {
+        let modelos 
+        if(marca) {
+            modelos = await this.modeloService.carregarModeloPelaMarca(marca)
+        } else {
+            modelos = await this.modeloService.carregarModelos()    
+        }
+        return modelos 
     }
 
     @Get("/marcas")

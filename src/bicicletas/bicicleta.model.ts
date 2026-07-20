@@ -8,7 +8,7 @@ export class BicicletaModel {
     @PrimaryGeneratedColumn("uuid")
     id: string 
 
-    @ManyToMany(() => ModeloModel)
+    @ManyToOne(() => ModeloModel)
     @JoinColumn({name: "modelo_id"})
     modelo: ModeloModel
 

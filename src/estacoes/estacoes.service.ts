@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { EstacaoModel } from './estacao.model';
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -29,8 +29,11 @@ export class EstacoesService {
         return await this.estacaoRepository.find();
     }
 
-    async buscarEstacaoPorId(id:string): Promise <EstacaoModel | null> {
-        return await this.estacaoRepository.findOneBy({id});
+    async buscarEstacaoPorId(id:string): Promise <EstacaoModel> {
+        const estacao = await this.estacaoRepository.findOneBy({id})
+
+        if (!estacao) throw new NotFoundException("Nenhuma estação encontrada com este id")
+        return estacao
     }
 
     async buscarEstacaoUsandoParteDoNome(query: string): Promise <EstacaoModel[]> {

@@ -4,9 +4,10 @@ import { BicicletasController } from './bicicletas.controller';
 import { BicicletasService } from './bicicletas.service';
 import { BicicletaModel } from './bicicleta.model';
 import { ModeloModule } from 'src/modelo/modelo.module';
+import { EstacoesModule } from 'src/estacoes/estacoes.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([BicicletaModel]), ModeloModule],
+  imports:[TypeOrmModule.forFeature([BicicletaModel]), ModeloModule, EstacoesModule],
   controllers: [BicicletasController],
   providers: [BicicletasService]
 })

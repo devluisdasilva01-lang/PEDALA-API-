@@ -54,9 +54,8 @@ export class ModeloService {
     }
 
     async carregarModeloPeloId(modeloId: string): Promise<ModeloModel>{
-        const modelo = await this.modeloRepository.findOne({
-            where: {id: modeloId},
-            relations: {marca: true}
+        const modelo = await this.modeloRepository.findOneBy({
+           id: modeloId
         })
 
         if (!modelo) throw new NotFoundException("Modelo não encontrado")

@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ModeloService } from './modelo.service';
 import { ModeloModel } from './modelo.model';
 import { ModeloRequestDto } from './dto/modelo_request.dto';
-import { ModeloResponseDto } from './dto/modelo_reponse.dto';
+import { ModeloResponseDto } from './dto/modelo_response.dto';
 
 @Controller('modelos')
 export class ModeloController {

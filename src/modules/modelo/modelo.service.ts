@@ -4,7 +4,7 @@ import { ModeloModel } from './modelo.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ModeloRequestDto } from './dto/modelo_request.dto';
 import { MarcaService } from 'src/modules/marca/marca.service';
-import { ModeloResponseDto } from './dto/modelo_reponse.dto';
+import { ModeloResponseDto } from './dto/modelo_response.dto';
 
 @Injectable()
 export class ModeloService {

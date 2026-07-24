@@ -1,4 +1,4 @@
-import { UsuarioPapel } from "src/usuario/papel.enum";
+import { UsuarioPapel } from "src/modules/usuario/papel.enum";
 import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
 
 export class AddColunaPerfilTabelaUsuariots1784811543044 implements MigrationInterface {

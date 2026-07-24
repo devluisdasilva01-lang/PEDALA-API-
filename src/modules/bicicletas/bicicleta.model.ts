@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ModeloModel } from "../modelo/modelo.model";
 import { StatusEstacao } from "./status_estacao.enum";
-import { EstacaoModel } from "src/estacoes/estacao.model";
+import { EstacaoModel } from "src/modules/estacoes/estacao.model";
 
 @Entity("bicicletas")
 export class BicicletaModel {

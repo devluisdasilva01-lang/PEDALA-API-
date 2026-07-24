@@ -3,9 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppService } from './app.service';
-import { UsuarioModule } from './usuario/usuario.module';
+import { UsuarioModule } from './modules/usuario/usuario.module';
 import { typeOrmConfig } from './config/typeorm.config';
-import { EstacoesModule } from './estacoes/estacoes.module';
+import { EstacoesModule } from './modules/estacoes/estacoes.module';
+import { BicicletasModule } from './modules/bicicletas/bicicletas.module';
+import { MarcaModule } from './modules/marca/marca.module';
+import { ModeloModule } from './modules/modelo/modelo.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +20,10 @@ import { EstacoesModule } from './estacoes/estacoes.module';
     TypeOrmModule.forRoot(typeOrmConfig),
     UsuarioModule,
     EstacoesModule,
+    BicicletasModule,
+    MarcaModule,
+    ModeloModule,
+    AuthModule,
   ],
   providers: [AppService],
 })

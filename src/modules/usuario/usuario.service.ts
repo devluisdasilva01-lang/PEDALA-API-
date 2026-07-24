@@ -4,6 +4,8 @@ import { UsuarioEditarRequestDto } from './dto/usuario_editar_request.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsuarioModel } from './usuario.model';
+import bcrypt from 'bcrypt';
+import { UsuarioPapel } from './papel.enum';
 
 @Injectable()
 export class UsuarioService {
@@ -14,19 +16,27 @@ export class UsuarioService {
     ) {}
 
     async salvarUsuario(dto: UsuarioResquestDto) {
-        const usuario = await this.usuarioRepository.findOne({
+        const existeusuario = await this.usuarioRepository.findOne({
             where: {
             email: dto.email,
          },
         });
 
-        if (usuario) {
+        if (existeusuario) {
             throw new BadRequestException(
                  `Usuário já Cadastrado com email ${dto.email}`,
             );
         }
 
-        await this.usuarioRepository.save(dto);
+        const passwdHash = await bcrypt.hash(dto.senha, 12)
+
+        const usuario = this.usuarioRepository.create({
+            email: dto.email,
+            senha: passwdHash,
+            nome: dto.nome,
+            perfil: dto.perfil ? dto.perfil : UsuarioPapel.CLIENTE
+        }) 
+        await this.usuarioRepository.save(usuario);
     }
 
     listarUsuario() {

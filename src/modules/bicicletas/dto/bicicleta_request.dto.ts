@@ -1,0 +1,18 @@
+import { IsEnum, IsNotEmpty, IsOptional } from "class-validator";
+import { StatusEstacao } from "../status_estacao.enum";
+
+export class BicicletaRequestDto {
+    @IsNotEmpty({message: "Campo modelo é obrigatório"})
+    modeloId: string
+
+    @IsNotEmpty({message: "Campo lotação é obrigatório"})
+    estacaoId: string
+
+    @IsOptional()
+    @IsEnum(StatusEstacao,
+        {
+            message: `Status inválido. Valores permitidos: EM_USO, DISPONIVEL, EM_MANUTENCAO ou INATIVA`
+        }
+    )
+    status?: StatusEstacao
+}
